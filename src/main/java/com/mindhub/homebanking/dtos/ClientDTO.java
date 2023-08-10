@@ -16,6 +16,8 @@ public class ClientDTO {
     private String lastName;
     private String email;
     private Set<AccountDTO> accounts = new HashSet<>();
+
+    //constructor
     public ClientDTO(Client client) {
 
         this.id = client.getId();
@@ -30,6 +32,7 @@ public class ClientDTO {
 
     }
 
+    //getters
     public long getId() {
         return id;
     }
