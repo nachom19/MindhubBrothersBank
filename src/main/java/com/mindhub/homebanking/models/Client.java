@@ -8,7 +8,11 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.FetchType;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
+
+import static java.util.stream.Collectors.toList;
 
 @Entity
 public class Client {
@@ -22,6 +26,9 @@ public class Client {
     private String email;
     @OneToMany(mappedBy="ownerAccount", fetch=FetchType.EAGER)
     private Set<Account> accounts = new HashSet<>();
+
+    @OneToMany (mappedBy = "client", fetch = FetchType.EAGER)
+    private Set<ClientLoan> clientLoans = new HashSet<>();
 
 
     //constructores
@@ -54,6 +61,10 @@ public class Client {
         return accounts;
     }
 
+    public Set<ClientLoan> getClientLoans() {
+        return clientLoans;
+    }
+
     //setters
 
     public void setFirstName(String firstName) {
@@ -73,6 +84,17 @@ public class Client {
     public void addAccount(Account account) {
         account.setOwnerAccount(this);
         accounts.add(account);
+    }
+
+    //Agregar prestamos a un cliente
+    public void addClient (ClientLoan clientloan){
+        clientloan.setClient(this);
+        clientLoans.add(clientloan);
+    }
+
+    //Listar prestamos
+    public List<Loan> getLoans() {
+        return clientLoans.stream().map(clientLoan -> clientLoan.getLoan()).collect(toList());
     }
 
 }

@@ -14,14 +14,14 @@ public class AccountDTO {
 
     private long id;
     private String number;
-    private LocalDate date;
+    private LocalDate creationDate;
     private Double balance;
     private Set<TransactionDTO> transactions = new HashSet<>();
 
     public AccountDTO(Account account) {
         this.id = account.getId();
         this.number = account.getNumber();
-        this.date = account.getCreationDate();
+        this.creationDate = account.getCreationDate();
         this.balance = account.getBalance();
         this.transactions = account.getTransactions().stream().map(transaction -> new TransactionDTO(transaction)).collect(Collectors.toSet());
     }
@@ -35,7 +35,7 @@ public class AccountDTO {
     }
 
     public LocalDate getCreationDate() {
-        return date;
+        return creationDate;
     }
 
     public Double getBalance() {
