@@ -73,9 +73,9 @@ public class Loan {
     }
 
     //Metodos
-    public void addLoan (ClientLoan clientloan){
-        clientloan.setLoan(this);
-        clientLoans.add(clientloan);
+    public void addLoan (ClientLoan clientLoan){
+        clientLoan.setLoan(this);
+        clientLoans.add(clientLoan);
     }
 
     //Listar prestamos

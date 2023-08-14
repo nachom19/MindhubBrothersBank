@@ -87,9 +87,9 @@ public class Client {
     }
 
     //Agregar prestamos a un cliente
-    public void addClient (ClientLoan clientloan){
-        clientloan.setClient(this);
-        clientLoans.add(clientloan);
+    public void addClient (ClientLoan clientLoan){
+        clientLoan.setClient(this);
+        clientLoans.add(clientLoan);
     }
 
     //Listar prestamos
