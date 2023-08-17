@@ -23,7 +23,8 @@ public class HomebankingApplication {
 									  AccountRepository accountRepository,
 									  TransactionRepository transactionRepository,
 									  LoanRepository loanRepository,
-									  ClientLoanRepository clientLoanRepository){
+									  ClientLoanRepository clientLoanRepository,
+									  CardRepository cardRepository){
 		return (args) -> {
 			// Creación de clientes
 			Client client1 = new Client("Melba","Morel","melba@mindhub.com");
@@ -95,6 +96,19 @@ public class HomebankingApplication {
 			client2.addClient(clientLoan4);
 			loan3.addLoan(clientLoan4);
 			clientLoanRepository.save(clientLoan4);
+
+			//Creacion de tarjetas
+			Card card1 = new Card("Mabel Morel",CardType.DEBIT,CardColor.GOLD,"4878-1456-2235-9807",758);
+			client1.addCard(card1);
+			cardRepository.save(card1);
+
+			Card card2 = new Card(client1.getFirstName()+" "+client1.getLastName(),CardType.CREDIT,CardColor.TITANIUM,"7849-5146-5489-1007",149);
+			client1.addCard(card2);
+			cardRepository.save(card2);
+
+			Card card3 = new Card(client2.getFirstName()+" "+client2.getLastName(),CardType.CREDIT,CardColor.SILVER,"4899-1465-4549-1986",786);
+			client2.addCard(card3);
+			cardRepository.save(card3);
 
 		};
 	}
