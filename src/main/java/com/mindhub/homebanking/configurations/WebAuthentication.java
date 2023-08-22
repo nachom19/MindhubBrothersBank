@@ -24,9 +24,9 @@ public class WebAuthentication extends GlobalAuthenticationConfigurerAdapter {
             Client client= clientRepository.findByEmail(inputName);
             if (client != null) {
                 return new User(client.getEmail(), client.getPassword(),
-                        AuthorityUtils.createAuthorityList("USER"));
+                        AuthorityUtils.createAuthorityList("CLIENT"));
             } else {
-                throw new UsernameNotFoundException("Unknown user: " + inputName);
+                throw new UsernameNotFoundException("Unknown client: " + inputName);
             }
         });
     }
