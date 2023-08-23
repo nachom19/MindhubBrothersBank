@@ -2,8 +2,13 @@ package com.mindhub.homebanking.controllers;
 
 import com.mindhub.homebanking.dtos.AccountDTO;
 import com.mindhub.homebanking.models.Account;
+import com.mindhub.homebanking.models.Client;
 import com.mindhub.homebanking.repositories.AccountRepository;
+import com.mindhub.homebanking.repositories.ClientRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -19,6 +24,8 @@ public class AccountController {
 
     @Autowired
     private AccountRepository accountRepository;
+    @Autowired
+    private ClientRepository clientRepository;
 
     @GetMapping ("/accounts")
     public List<AccountDTO> getAccounts(){
@@ -26,10 +33,17 @@ public class AccountController {
     }
 
     @GetMapping ("/accounts/{id}")
-    private AccountDTO getAccountById(@PathVariable Long id){
-        Optional<Account> account = accountRepository.findById(id);
-        return new AccountDTO(account.get());
+    private ResponseEntity<Object> getAccountById(@PathVariable Long id, Authentication authentication){
+        Account account = accountRepository.findById(id).orElse(null);
+        Client client = clientRepository.findByEmail(authentication.getName());
+        if (account == null){
+            return new ResponseEntity<>("Account not found", HttpStatus.NOT_FOUND);
+        }
+        if (account.getOwnerAccount().equals(client)){
+            AccountDTO accountDTO = new AccountDTO(account);
+            return new ResponseEntity<>(accountDTO, HttpStatus.ACCEPTED);
+        } else {
+            return new ResponseEntity<>("This account does not belong to you", HttpStatus.NOT_FOUND);
+        }
     }
-
-
 }
