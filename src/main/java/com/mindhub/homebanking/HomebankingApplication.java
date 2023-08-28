@@ -33,9 +33,11 @@ public class HomebankingApplication {
 			// Creación de clientes
 			Client client1 = new Client("Melba","Morel","melba@mindhub.com", passwordEnconder.encode("123"));
 			Client client2 = new Client("Aarón","Beltrán","abeltran@mindhub.com", passwordEnconder.encode("789"));
+			Client client3 = new Client("Ignacio","Millan","imillan@MBBadmin.com", passwordEnconder.encode("789"));
 
 			clientRepository.save(client1);
 			clientRepository.save(client2);
+			clientRepository.save(client3);
 
 			//Creacion de cuentas
 
