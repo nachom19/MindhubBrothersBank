@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.Random;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import static java.util.stream.Collectors.toList;
 
@@ -40,15 +41,14 @@ public class CardController {
         int cardLimit = 3;
         Set<Card> cards = client.getCards();
 
-        if (cardType == CardType.CREDIT || cardType == CardType.DEBIT) {
-            long cardsSameType = cards.stream()
-                    .filter(newCard -> newCard.getType() == cardType)
-                    .count();
-            if (cardsSameType >= cardLimit) {
-                return new ResponseEntity<>("You have requested the maximum number of cards of this type", HttpStatus.FORBIDDEN);
+            if (!cards.stream()
+                                .filter(card -> card.getColor().equals(cardColor))
+                                .filter(card -> card.getType()==cardType)
+                                .collect(Collectors.toSet()).isEmpty()) {
+                return new ResponseEntity<>("You have requested the maximum number of "+cardType+ " cards of this "+ cardColor, HttpStatus.FORBIDDEN);
             }
-        }
-        // Creación de numero de terjeta
+
+        // Creación de numero de tarjeta
         String numberCard;
         do {
             Random random = new Random();
