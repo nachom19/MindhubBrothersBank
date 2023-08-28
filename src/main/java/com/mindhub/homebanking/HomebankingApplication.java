@@ -10,6 +10,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @SpringBootApplication
@@ -46,7 +47,7 @@ public class HomebankingApplication {
 			accountRepository.save(account1);
 
 			Account account2 = new Account("VIN002", 7500.0);
-			account2.setCreationDate(LocalDate.now().plusDays(1));
+			account2.setCreationDate(LocalDateTime.now().plusDays(1));
 			client1.addAccount(account2);
 			accountRepository.save(account2);
 
@@ -55,7 +56,7 @@ public class HomebankingApplication {
 			accountRepository.save(account3);
 
 			Account account4 = new Account("VIN004", 3500.0);
-			account4.setCreationDate(LocalDate.now().plusDays(2));
+			account4.setCreationDate(LocalDateTime.now().plusDays(2));
 			client2.addAccount(account4);
 			accountRepository.save(account4);
 
