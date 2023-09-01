@@ -71,10 +71,15 @@ public class TransactionController {
         if (accountDestination.getNumber() == null) {
             return new ResponseEntity<>("The selected account does not exist", HttpStatus.FORBIDDEN);
         }
-        //Verificar que la cuenta origen tega saldo
+        //Verificar que la cuenta origen tenga saldo
         if (accountOrigin.getBalance()< amount) {
-            return new ResponseEntity<>("The selected account does not exist", HttpStatus.FORBIDDEN);
+            return new ResponseEntity<>("The account does not have enough balance to carry out the transaction", HttpStatus.FORBIDDEN);
         }
+        //verificar que el monto no sea negativo
+        if (amount < 0) {
+            return new ResponseEntity<>("The amount must be a positive value", HttpStatus.FORBIDDEN);
+        }
+
         //transaccion de DEBITO
         Transaction transactionDebit = new Transaction(TransactionType.DEBIT, -amount, description +" "+accountDestination.getNumber(), LocalDate.now());
         accountOrigin.addTransaction(transactionDebit);

@@ -40,6 +40,12 @@ public class CardController {
         Client client = clientRepository.findByEmail(authentication.getName());
         int cardLimit = 3;
         Set<Card> cards = client.getCards();
+        if (cardType.toString().isBlank()) {
+            return new ResponseEntity<>("Missing to complete the Card Typer ", HttpStatus.FORBIDDEN);
+        }
+        if (cardColor.toString().isBlank()) {
+            return new ResponseEntity<>("Missing to complete the Card Color", HttpStatus.FORBIDDEN);
+        }
 
             if (!cards.stream()
                                 .filter(card -> card.getColor().equals(cardColor))
@@ -47,6 +53,7 @@ public class CardController {
                                 .collect(Collectors.toSet()).isEmpty()) {
                 return new ResponseEntity<>("You have requested the maximum number of "+cardType+ " cards of this "+ cardColor, HttpStatus.FORBIDDEN);
             }
+        //todo: validar que los parámetros de Card no vengan vacíos.
 
         // Creación de numero de tarjeta
         String numberCard;
