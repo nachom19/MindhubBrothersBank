@@ -44,7 +44,16 @@ public class LoanController {
         Account account = accountRepository.findByNumber(loanApplicationDTO.getToAccountNumber());
 
         //Verificar que los parametros no esten vacios
-        if (loanApplicationDTO.toString().isBlank()) { //todo: revisar esta condición
+        if (loanApplicationDTO.getLoanId() == 0) {
+            return new ResponseEntity<>("Missing to complete the data", HttpStatus.FORBIDDEN);
+        }
+        if (loanApplicationDTO.getAmount() == null) {
+            return new ResponseEntity<>("Missing to complete the data", HttpStatus.FORBIDDEN);
+        }
+        if (loanApplicationDTO.getPayments() == 0) {
+            return new ResponseEntity<>("Missing to complete the data", HttpStatus.FORBIDDEN);
+        }
+        if (loanApplicationDTO.getToAccountNumber().isBlank()) {
             return new ResponseEntity<>("Missing to complete the data", HttpStatus.FORBIDDEN);
         }
         //verificar que el monto sea mayor que 0
@@ -87,7 +96,7 @@ public class LoanController {
         transactionRepository.save(transaction);
 
         //modificacion del saldo de la cuenta
-        account.setBalance(loanApplicationDTO.getAmount());
+        account.setBalance(account.getBalance()+loanApplicationDTO.getAmount());
         accountRepository.save(account);
 
         return new ResponseEntity<>("The "+ loan.getName() +" Loan has been completed successfully", HttpStatus.CREATED);
