@@ -7,6 +7,9 @@ import com.mindhub.homebanking.models.TransactionType;
 import com.mindhub.homebanking.repositories.AccountRepository;
 import com.mindhub.homebanking.repositories.ClientRepository;
 import com.mindhub.homebanking.repositories.TransactionRepository;
+import com.mindhub.homebanking.services.AccountService;
+import com.mindhub.homebanking.services.ClientService;
+import com.mindhub.homebanking.services.TransactionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,11 +26,11 @@ import java.time.LocalDate;
 @RequestMapping ("/api")
 public class TransactionController {
     @Autowired
-    ClientRepository clientRepository;
+    private ClientService clientService;
     @Autowired
-    AccountRepository accountRepository;
+    private AccountService accountService;
     @Autowired
-    TransactionRepository transactionRepository;
+    TransactionService transactionService;
 
     @Transactional
     @PostMapping("/transactions")
@@ -36,10 +39,10 @@ public class TransactionController {
                                                     @RequestParam String toAccountNumber,
                                                     @RequestParam String description,
                                                     Authentication authentication){
-        Client client = clientRepository.findByEmail(authentication.getName());
+        Client client = clientService.findByEmail(authentication.getName());
 
-        Account accountOrigin = accountRepository.findByNumber(fromAccountNumber);
-        Account accountDestination = accountRepository.findByNumber(toAccountNumber);
+        Account accountOrigin = accountService.findByNumber(fromAccountNumber);
+        Account accountDestination = accountService.findByNumber(toAccountNumber);
 
         //Verificar que los parametros no esten vacios
         if (fromAccountNumber.isBlank()) {
@@ -84,14 +87,14 @@ public class TransactionController {
         Transaction transactionDebit = new Transaction(TransactionType.DEBIT, -amount, description +" "+accountDestination.getNumber(), LocalDate.now());
         accountOrigin.addTransaction(transactionDebit);
         accountOrigin.setBalance(accountOrigin.getBalance() - amount);
-        transactionRepository.save(transactionDebit);
-        accountRepository.save(accountOrigin);
+        transactionService.saveTransaction(transactionDebit);
+        accountService.saveAccount(accountOrigin);
         //transaccion de CREDITO
         Transaction transactionCredit = new Transaction(TransactionType.CREDIT, amount, description +" "+accountOrigin.getNumber(), LocalDate.now());
         accountDestination.addTransaction(transactionCredit);
         accountDestination.setBalance(accountDestination.getBalance() + amount);
-        transactionRepository.save(transactionCredit);
-        accountRepository.save(accountDestination);
+        transactionService.saveTransaction(transactionCredit);
+        accountService.saveAccount(accountDestination);
 
         return new ResponseEntity<>("The transfer has been completed successfully", HttpStatus.ACCEPTED);
     }
