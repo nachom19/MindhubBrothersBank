@@ -32,7 +32,7 @@ public class HomebankingApplication {
 									  CardRepository cardRepository){
 		return (args) -> {
 			// Creación de clientes
-			Client client1 = new Client("Melba","Morel","melba@mindhub.com", passwordEnconder.encode("123"));
+			/*Client client1 = new Client("Melba","Morel","melba@mindhub.com", passwordEnconder.encode("123"));
 			Client client2 = new Client("Aarón","Beltrán","abeltran@mindhub.com", passwordEnconder.encode("789"));
 			Client client3 = new Client("Ignacio","Millan","imillan@MBBadmin.com", passwordEnconder.encode("789"));
 
@@ -61,7 +61,7 @@ public class HomebankingApplication {
 			accountRepository.save(account4);
 
 			//Creacion de transacciones
-			Transaction transaction1 = new Transaction(TransactionType.CREDIT, 3000.0, "Salary",LocalDate.now());
+			Transaction transaction1 = new Transaction(TransactionType.CREDIT, 6000.0, "Salary",LocalDate.now());
 			account1.addTransaction(transaction1);
 			transactionRepository.save(transaction1);
 
@@ -69,7 +69,7 @@ public class HomebankingApplication {
 			account1.addTransaction(transaction2);
 			transactionRepository.save(transaction2);
 
-			Transaction transaction3 = new Transaction(TransactionType.CREDIT, 5500.0, "Salary",LocalDate.now());
+			Transaction transaction3 = new Transaction(TransactionType.CREDIT, 7500.0, "Salary",LocalDate.now());
 			account2.addTransaction(transaction3);
 			transactionRepository.save(transaction3);
 
@@ -115,7 +115,7 @@ public class HomebankingApplication {
 
 			Card card3 = new Card(client2.getFirstName()+" "+client2.getLastName(),CardType.CREDIT,CardColor.SILVER,"4899-1465-4549-1986",786);
 			client2.addCard(card3);
-			cardRepository.save(card3);
+			cardRepository.save(card3);*/
 
 		};
 	}
