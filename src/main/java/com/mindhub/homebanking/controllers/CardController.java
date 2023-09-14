@@ -9,6 +9,7 @@ import com.mindhub.homebanking.repositories.CardRepository;
 import com.mindhub.homebanking.repositories.ClientRepository;
 import com.mindhub.homebanking.services.CardService;
 import com.mindhub.homebanking.services.ClientService;
+import com.mindhub.homebanking.utils.CardUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -57,19 +58,12 @@ public class CardController {
             }
 
 
-        // Creación de numero de tarjeta
-        String numberCard;
-        do {
-            Random random = new Random();
-            numberCard = random.nextInt(9999)
-                        + "-" + random.nextInt(9999)
-                        + "-" + random.nextInt(9999)
-                        + "-" + random.nextInt(9999);
-        } while (cardService.findByNumber(numberCard) != null);
+        // Creación de numero de tarjeta usando CardUtils
+        String numberCard  = CardUtils.getNumberCard();
+        while (cardService.findByNumber(numberCard) != null);
 
-        // Creación de numero de cvv
-        Random random = new Random();
-        int cvvCard = random.nextInt(999);
+        // Creación de numero de cvv usando CardUtils
+        int cvvCard = CardUtils.getCvv();
 
         //creacion de la tarjeta
         Card card = new Card(client.getFirstName() + " " + client.getLastName(), cardType, cardColor, numberCard, cvvCard);

@@ -7,6 +7,7 @@ import com.mindhub.homebanking.models.Client;
 
 import com.mindhub.homebanking.services.AccountService;
 import com.mindhub.homebanking.services.ClientService;
+import com.mindhub.homebanking.utils.AccountUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -56,11 +57,9 @@ public class AccountController {
         if (client.getAccounts().size()>=3){
             return new ResponseEntity<>("Already has the maximum number of accounts", HttpStatus.FORBIDDEN);
         }
-        String numberAccount;
-        do {
-            Random random = new Random();
-            numberAccount = "VIN-" + random.nextInt(99999999);
-        }while (accountService.findByNumber(numberAccount) != null);
+        // Creación de numero de cuenta usando AccountUtils
+        String numberAccount = AccountUtils.getNumberAccount();
+        while (accountService.findByNumber(numberAccount) != null);
 
         Account account = new Account(numberAccount,0.0);
         client.addAccount(account);
